@@ -11,6 +11,9 @@ client.on('message', message => {
         case "pingmebaby":
             ping(message);
             break;
+        case "manga":
+            manga(message);
+            break;
     }
 })
 
@@ -29,4 +32,21 @@ function ping(message) {
             }
         });
     });
+}
+
+function manga(message) {
+    https.get("https://api.mangadex.org/manga?title=Beatrice", (res) => {
+        res.setEncoding('utf8');
+        let rawData = '';
+        res.on('data', (chunk) => { rawData += chunk; });
+        res.on('end', () => {
+            try {
+                const parsedData = JSON.parse(rawData);
+                console.log(parsedData);
+                console.log(parsedData.result)
+            } catch (e) {
+                console.error(e.message);
+            }
+        });
+    })
 }
