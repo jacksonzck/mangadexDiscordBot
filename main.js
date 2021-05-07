@@ -25,7 +25,8 @@ function ping(message) {
         res.on('end', () => {
             try {
                 //const parsedData = JSON.parse(rawData);
-                message.reply(rawData);
+                //message.reply(rawData);
+                message.channel.send(rawData);
             } catch (e) {
                 console.error(e.message);
             }
@@ -35,7 +36,7 @@ function ping(message) {
 
 //Goes from parsedData to results to each result to data
 function manga(message) {
-    https.get("https://api.mangadex.org/manga?title=Beatrice", (res) => {
+    https.get("https://api.mangadex.org/manga?title=" + message.content.split(" ")[1], (res) => {
         res.setEncoding('utf8');
         let rawData = '';
         res.on('data', (chunk) => { rawData += chunk; });
@@ -43,9 +44,10 @@ function manga(message) {
             try {
                 const parsedData = JSON.parse(rawData);
                 console.log(parsedData);
-                console.log(parsedData.results)
+                console.log(parsedData.results);
                 parsedData.results.forEach((result) => {
-                    console.log(result.data)
+                    console.log(result.data);
+                    message.channel.send(result.data.attributes.title.en);
                 })
             } catch (e) {
                 console.error(e.message);
