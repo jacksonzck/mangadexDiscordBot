@@ -26,6 +26,7 @@ function ping(message) {
             try {
                 //const parsedData = JSON.parse(rawData);
                 //message.reply(rawData);
+                console.log(res);
                 message.channel.send(rawData);
             } catch (e) {
                 console.error(e.message);
@@ -42,13 +43,16 @@ function manga(message) {
         res.on('data', (chunk) => { rawData += chunk; });
         res.on('end', () => {
             try {
+                let newData = "";
                 const parsedData = JSON.parse(rawData);
                 console.log(parsedData);
                 console.log(parsedData.results);
                 parsedData.results.forEach((result) => {
                     console.log(result.data);
-                    message.channel.send(result.data.attributes.title.en);
+                    //message.channel.send(result.data.attributes.title.en);
+                    newData = newData + " > " + result.data.attributes.title.en + "\n"
                 })
+                message.channel.send(newData)
             } catch (e) {
                 console.error(e.message);
             }
