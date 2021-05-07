@@ -7,11 +7,11 @@ client.login(process.env.DISCORD_TOKEN);
 
 
 client.on('message', message => {
-    switch (message.content) {
-        case "pingmebaby":
+    switch (message.content.split(" ")[0]) {
+        case "!ping":
             ping(message);
             break;
-        case "manga":
+        case "!manga":
             manga(message);
             break;
     }
@@ -25,7 +25,6 @@ function ping(message) {
         res.on('end', () => {
             try {
                 //const parsedData = JSON.parse(rawData);
-                console.log(rawData);
                 message.reply(rawData);
             } catch (e) {
                 console.error(e.message);
@@ -34,6 +33,7 @@ function ping(message) {
     });
 }
 
+//Goes from parsedData to results to each result to data
 function manga(message) {
     https.get("https://api.mangadex.org/manga?title=Beatrice", (res) => {
         res.setEncoding('utf8');
@@ -43,7 +43,10 @@ function manga(message) {
             try {
                 const parsedData = JSON.parse(rawData);
                 console.log(parsedData);
-                console.log(parsedData.result)
+                console.log(parsedData.results)
+                parsedData.results.forEach((result) => {
+                    console.log(result.data)
+                })
             } catch (e) {
                 console.error(e.message);
             }
